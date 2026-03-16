@@ -55,7 +55,7 @@ void addTask() {
 
 // function to mark task as done (temp)
 void deleteTask(int index) {
-    if (taskV.size() <= index && index > 0) {
+    if (index <= taskV.size() && index > 0) {
         if (taskV.at(index - 1).isCompleted) {
             cout << "Task was already marked as done. No changes made..." << endl;
         }

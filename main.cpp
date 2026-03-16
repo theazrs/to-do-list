@@ -6,6 +6,14 @@ using namespace std;
 // global
 vector<string> tasks = {};
 
+// function to idle until something is imput
+void waitOnInput() {
+    cout << "Press ENTER to continue... ";
+    cin.get();
+    cin.ignore();
+    
+}
+
 // main screen
 void index() {
     cout << "Select option below" << endl << endl;
@@ -56,6 +64,7 @@ int main() {
         case 1:
             cout << "Your tasks: " << endl << endl;
             printTasks();
+            waitOnInput();
             break;
 
         case 2:

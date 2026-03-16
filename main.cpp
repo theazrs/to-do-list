@@ -4,13 +4,18 @@
 using namespace std; 
 
 // global
-vector<string> tasks = {};
+class Tasks {
+    public:
+        string name;
+        bool isCompleted = false;
+};
+
+vector<Tasks> taskV = {};
 
 // function to idle until something is imput
 void waitOnInput() {
     cout << "Press ENTER to continue... ";
     cin.get();
-
 }
 
 // main screen
@@ -25,36 +30,48 @@ void index() {
 // function to output to screen
 void printTasks() {
     int i = 1;
-    for (string task : tasks) {
-        cout << i << ". " << task << endl;
+    string temp;
+    for (Tasks task : taskV) {
+        if (!task.isCompleted) {
+            temp = "";
+        }
+        else {
+            temp = " ✓";
+        }
+        cout << i << ". " << task.name << temp << endl;
         i++;
     }
 }
 
 // function to add task to vector
 void addTask() {
-    string task;
+    Tasks task;
     cout << "Enter the name of the task" << endl;
-    getline(cin, task);
-    tasks.push_back(task);
+    getline(cin, task.name);
+    taskV.push_back(task);
     // clear 
     cout << "Task added successfully" << endl;
 }
 
 // function to mark task as done (temp)
 void deleteTask(int index) {
-    if (tasks.size() <= index && index > 0) {
-        tasks.erase(tasks.begin() + index - 1);
-        cout << "Task marked as done / deleted" << endl;
+    if (taskV.size() <= index && index > 0) {
+        if (taskV.at(index - 1).isCompleted) {
+            cout << "Task was already marked as done. No changes made..." << endl;
+        }
+        else {
+            taskV.at(index - 1).isCompleted = true;
+            cout << "Task marked as done" << endl;
+        }
     } 
     else {
         cout << "Error!! " << endl;
     }
 }
 
-// function to check if vector is em
+// function to check if vector is empty
 int isEmpty() {
-    if (tasks.empty() == true) {
+    if (taskV.empty() == true) {
         return 1;
     }
     return 0;
@@ -134,7 +151,6 @@ int main() {
                 break;
         }
     }
-    
     
     return 0;
 }

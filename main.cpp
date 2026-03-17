@@ -12,6 +12,24 @@ class Tasks {
 
 vector<Tasks> taskV = {};
 
+// function to clear screen
+void clearScreen() {
+    cout << "\033[2J\033[1;1H" << endl;
+}
+
+// function to re-order tasks
+void reOrder() {
+    vector<Tasks> tempV = {};
+    Tasks tempT;
+    for (int i = 0; i < taskV.size(); i++) {
+        if (taskV.at(i).isCompleted) {
+            tempT = taskV.at(i);
+            taskV.erase(taskV.begin() + i);
+            taskV.push_back(tempT);
+        }
+    }
+}
+
 // function to idle until something is imput
 void waitOnInput() {
     cout << "Press ENTER to continue... ";
@@ -49,7 +67,8 @@ void addTask() {
     cout << "Enter the name of the task" << endl;
     getline(cin, task.name);
     taskV.push_back(task);
-    // clear 
+    reOrder();
+    clearScreen();
     cout << "Task added successfully" << endl;
 }
 
@@ -62,6 +81,7 @@ void deleteTask(int index) {
         else {
             taskV.at(index - 1).isCompleted = true;
             cout << "Task marked as done" << endl;
+            reOrder();
         }
     } 
     else {
@@ -75,11 +95,6 @@ int isEmpty() {
         return 1;
     }
     return 0;
-}
-
-// function to clear screen
-void clearScreen() {
-    cout << "\033[2J\033[1;1H" << endl;
 }
 
 // main

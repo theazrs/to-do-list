@@ -106,7 +106,17 @@ int main() {
     cout << "Welcome to my to-do list!!!" << endl << endl;
     while (true) {
         index();
-        cin >> response;
+
+        // input checking
+        while (true) {
+            cin >> response;
+            if (!cin.fail()) {
+                break;
+            }
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),   '\n');
+            cout << "Please enter an integer. " << endl;
+        }
         cin.ignore();
         clearScreen();
         switch(response) {
@@ -148,6 +158,7 @@ int main() {
                 cout << "Choose which task to mark as done." << endl;
                 cin >> response1;
                 cin.ignore();
+
                 deleteTask(response1);
                 waitOnInput();
                 clearScreen();

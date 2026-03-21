@@ -63,13 +63,25 @@ void printTasks() {
 
 // function to add task to vector
 void addTask() {
+    string temp;
     Tasks task;
     cout << "Enter the name of the task" << endl;
-    getline(cin, task.name);
-    taskV.push_back(task);
-    reOrder();
-    clearScreen();
-    cout << "Task added successfully" << endl;
+    cout << "If you do not wish to add a task right now, simply press enter" << endl;
+    getline(cin, temp);
+    // if blank input
+    if (temp == "") {
+        clearScreen();
+        cout << "No task was added" << endl;
+    }
+
+    else {
+        task.name = temp;
+        taskV.push_back(task);
+        reOrder();
+        clearScreen();
+        cout << "Task added successfully" << endl;
+    }
+
 }
 
 // function to mark task as done (temp)
@@ -156,9 +168,26 @@ int main() {
                 clearScreen();
                 printTasks();
                 cout << "Choose which task to mark as done." << endl;
-                cin >> response1;
+                cout << "Enter 0 to return." << endl;
+                // integer check
+                while (true) {
+                    cin >> response1;
+                    if (!cin.fail()) {
+                        break;
+                    }
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(),   '\n');
+                    cout << "Please enter an integer. " << endl;
+                }
                 cin.ignore();
 
+                if (response1 == 0) {
+                    clearScreen();
+                    cout << "No task was marked as done." << endl;
+                    waitOnInput();
+                    clearScreen();
+                    break;
+                }
                 deleteTask(response1);
                 waitOnInput();
                 clearScreen();

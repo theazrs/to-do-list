@@ -3,6 +3,8 @@
 #include <string>     // to use getline
 #include <vector>     // must include to use vectors
 #include <fstream>    // must include to use file i/o
+#include <sstream>
+
 using namespace std;
 using namespace std::filesystem;
 
@@ -137,17 +139,35 @@ int isEmpty()
 void loadFromFile()
 {
     string filename = "saves.txt";
+    
     if (exists(filename))
     {
         // load stuff from file
+        string line;
+        string task;
+        bool isTrue;
+        ifstream file(filename);
+        while (getline (file, line)) {
+            // continue getting stuff
+            stringstream ss(line);
+            getline(ss, task, ',');
+            ss >> isTrue;
+            Tasks current;
+            current.name = task;
+            current.isCompleted = isTrue;
+            taskV.push_back(current);
+        }
+        file.close();
     }
     else
     {
         // create file
+        ofstream file(filename);
+        file.close();
     }
-    // close file
 }
 
+// function to save tasks to file
 void writeToFile()
 {
     string filename = "saves.txt";
@@ -169,6 +189,7 @@ int main()
     // initial screen
     cout << "Welcome to my to-do list!!!" << endl
          << endl;
+    loadFromFile();
     while (true)
     {
         index();

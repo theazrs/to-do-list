@@ -9,6 +9,15 @@ A "simple" program that works as a to-do list. Written entirely in C++!
 5. The tasks you enter are saved, even when you re-run the program they will be there.
 
 ## Usage:
+- First of all clone the repo
+```bash
+git clone https://github.com/theazrs/to-do-list.git
+```
+enter into the directory by
+```bash
+cd to-do-list/
+```
+
 - You will need c++17 or newer to be able to run this program, as there is one feature I had to import from the c++17 library
 - If you use VScode then install the C/C++ Extension Pack and configure it to use c++17
 - If you are using the command line on linux/mac run the following code

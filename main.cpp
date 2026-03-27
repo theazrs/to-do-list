@@ -11,9 +11,30 @@ using namespace std::filesystem;
 // global
 class Tasks
 {
-public:
+private:
     string name;
     bool isCompleted = false;
+
+public:
+    Tasks(string name) : name(name), isCompleted(false) {}
+
+    // getter for name
+    string getName() const
+    {
+        return name;
+    }
+
+    // getter for check completion status;
+    bool getStatus() const
+    {
+        return isCompleted;
+    }
+
+    // setter for isCompleted
+    void setCompleted()
+    {
+        isCompleted = true;
+    }
 };
 
 vector<Tasks> taskV = {};
@@ -28,10 +49,10 @@ void clearScreen()
 void reOrder()
 {
     vector<Tasks> tempV = {};
-    Tasks tempT;
+    Tasks tempT("");
     for (int i = 0; i < taskV.size(); i++)
     {
-        if (taskV.at(i).isCompleted)
+        if (taskV.at(i).getStatus())
         {
             tempT = taskV.at(i);
             taskV.erase(taskV.begin() + i);
@@ -63,9 +84,9 @@ void printTasks()
 {
     int i = 1;
     string temp;
-    for (Tasks task : taskV)
+    for (auto task : taskV)
     {
-        if (!task.isCompleted)
+        if (!task.getStatus())
         {
             temp = "";
         }
@@ -73,7 +94,7 @@ void printTasks()
         {
             temp = " ✓";
         }
-        cout << i << ". " << task.name << temp << endl;
+        cout << i << ". " << task.getName() << temp << endl;
         i++;
     }
 }
@@ -82,10 +103,10 @@ void printTasks()
 void addTask()
 {
     string temp;
-    Tasks task;
     cout << "Enter the name of the task" << endl;
     cout << "If you do not wish to add a task right now, simply press enter" << endl;
     getline(cin, temp);
+
     // if blank input
     if (temp == "")
     {
@@ -95,7 +116,7 @@ void addTask()
 
     else
     {
-        task.name = temp;
+        Tasks task(temp);
         taskV.push_back(task);
         reOrder();
         clearScreen();
@@ -108,13 +129,13 @@ void deleteTask(int index)
 {
     if (index <= taskV.size() && index > 0)
     {
-        if (taskV.at(index - 1).isCompleted)
+        if (taskV.at(index - 1).getStatus())
         {
             cout << "Task was already marked as done. No changes made..." << endl;
         }
         else
         {
-            taskV.at(index - 1).isCompleted = true;
+            taskV.at(index - 1).setCompleted();
             cout << "Task marked as done" << endl;
             reOrder();
         }
@@ -139,7 +160,7 @@ int isEmpty()
 void loadFromFile()
 {
     string filename = "saves.txt";
-    
+
     if (exists(filename))
     {
         // load stuff from file
@@ -147,14 +168,17 @@ void loadFromFile()
         string task;
         bool isTrue;
         ifstream file(filename);
-        while (getline (file, line)) {
+        while (getline(file, line))
+        {
             // continue getting stuff
             stringstream ss(line);
             getline(ss, task, ',');
             ss >> isTrue;
-            Tasks current;
-            current.name = task;
-            current.isCompleted = isTrue;
+            auto current = Tasks(task);
+            if (isTrue)
+            {
+                current.setCompleted();
+            }
             taskV.push_back(current);
         }
         file.close();
@@ -175,7 +199,7 @@ void writeToFile()
     ofstream file(filename);
     for (auto task : taskV)
     {
-        file << task.name << "," << task.isCompleted << endl;
+        file << task.getName() << "," << task.getStatus() << endl;
     }
     file.close();
 }
@@ -291,6 +315,5 @@ int main()
             break;
         }
     }
-
     return 0;
 }
